@@ -3,4 +3,7 @@
 import cv2
 import rospy
 
+cap = cv2.VideoCapture(0)
 
+_, frame = cap.read()
+print(type(frame))

@@ -1,12 +1,5 @@
-#!/home/autonav-linux/catkin_ws/src/yolov5_ROS/scripts/yolov5/bin/python
-
-from cv_bridge import CvBridge, CvBridgeError
-from std_msgs.msg import String
-from sensor_msgs.msg import Image
-from PIL import Image as img
 import pyrealsense2 as rs
 import numpy as np
-import rospy
 import cv2
 
 FPS = 30
@@ -32,30 +25,14 @@ if not found_rgb:
     exit(0)
 
 config.enable_stream(rs.stream.color, Width, Height, rs.format.bgr8, FPS)
-
-# Start streaming
 pipeline.start(config)
-pub = rospy.Publisher("raw_image", Image, queue_size=10)
-rospy.init_node("RealSense", anonymous=True)
-rate = rospy.Rate(FPS)
-bridge = CvBridge()
 
 while True:
-    if rospy.is_shutdown():
-        cv2.destroyWindow()
-        break
     # Wait for a coherent pair of frames: depth and color
     frames = pipeline.wait_for_frames()
     color_frame = frames.get_color_frame()
 
     # Convert images to numpy arrays
     color_image = np.asanyarray(color_frame.get_data())
-    # color_image = img.fromarray(color_image.astype(np.uint8))
-    color_image = color_image.astype(np.uint8)
-    print(type(color_image))
-    try:
-        pub.publish(bridge.cv2_to_imgmsg(color_image, "bgr8"))
-    except CvBridgeError as e:
-        print(e)
-
-    rate.sleep()
+    cv2.imshow("res", color_image)
+    cv2.waitKey(1)
