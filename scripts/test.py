@@ -34,5 +34,7 @@ while True:
 
     # Convert images to numpy arrays
     color_image = np.asanyarray(color_frame.get_data())
+    print(color_image.dtype)
+    print(color_image.shape)
     cv2.imshow("res", color_image)
     cv2.waitKey(1)
