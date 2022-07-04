@@ -50,6 +50,7 @@ config.enable_stream(rs.stream.color, Width, Height, rs.format.bgr8, FPS)
 # Start streaming
 pipeline.start(config)
 pub = rospy.Publisher("raw_image", Image, queue_size=10)
+# pub = rospy.Publisher("raw_image", String, queue_size=10)
 rospy.init_node("RealSense", anonymous=True)
 rate = rospy.Rate(FPS)
 
@@ -62,8 +63,15 @@ while True:
     color_frame = frames.get_color_frame()
 
     # Convert images to numpy arrays
+<<<<<<< HEAD
     
     color_image = np.asanyarray(color_frame.get_data())
+=======
+
+    color_image = np.asanyarray(color_frame.get_data())
+    # print("%s" % list(color_image))
+    # color_image = img.fromarray(color_image.astype(np.uint8))
+>>>>>>> main
     color_image = color_image.astype(np.uint8)
     pub.publish(cv2_to_imgmsg(color_image))
     rate.sleep()
