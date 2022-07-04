@@ -64,7 +64,6 @@ while True:
 
     # Convert images to numpy arrays
     color_image = np.asanyarray(color_frame.get_data())
-
     color_image = np.asanyarray(color_frame.get_data())
     # print("%s" % list(color_image))
     # color_image = img.fromarray(color_image.astype(np.uint8))
