@@ -20,6 +20,7 @@ def main(data):
     cv_image = imgmsg_to_cv2(data)
     cv2.imshow("raw_data", cv_image)
     cv2.waitKey(1)
+
     print(time.time() - s_time)
 
 rospy.init_node("listener", anonymous=True)

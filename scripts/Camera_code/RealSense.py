@@ -1,8 +1,6 @@
 #!/home/autonav-linux/catkin_ws/src/yolov5_ROS/scripts/yolov5/bin/python3
 
-from std_msgs.msg import String
 from sensor_msgs.msg import Image
-from PIL import Image as img
 import pyrealsense2 as rs
 import numpy as np
 import rospy
@@ -50,7 +48,6 @@ config.enable_stream(rs.stream.color, Width, Height, rs.format.bgr8, FPS)
 # Start streaming
 pipeline.start(config)
 pub = rospy.Publisher("raw_image", Image, queue_size=10)
-# pub = rospy.Publisher("raw_image", String, queue_size=10)
 rospy.init_node("RealSense", anonymous=True)
 rate = rospy.Rate(FPS)
 
@@ -64,10 +61,8 @@ while True:
 
     # Convert images to numpy arrays
     color_image = np.asanyarray(color_frame.get_data())
-
     color_image = np.asanyarray(color_frame.get_data())
-    # print("%s" % list(color_image))
-    # color_image = img.fromarray(color_image.astype(np.uint8))
+
     color_image = color_image.astype(np.uint8)
     pub.publish(cv2_to_imgmsg(color_image))
     rate.sleep()
