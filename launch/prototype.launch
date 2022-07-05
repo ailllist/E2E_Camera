@@ -1,0 +1,6 @@
+<launch>
+    <group ns="test">
+        <node pkg="E2E_Camera" type="RealSense.py" name="image_generater"> </node>
+        <node pkg="E2E_Camera" type="detect_with_yolov5.py" name="yolov5" output="screen"> </node>
+    </group>
+</launch>

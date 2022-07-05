@@ -21,7 +21,6 @@ if str(ROOT) not in sys.path:
 ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
 from models.common import DetectMultiBackend
-from utils.datasets import LoadStreams
 from utils.general import (check_img_size,
                            non_max_suppression, scale_coords)
 from utils.plots import Annotator, colors
@@ -38,7 +37,7 @@ class YOLOv5:
 
 
     def __init__(self):
-        self.img = None
+        self.img = False
         rospy.init_node("yolov5-main", anonymous=True)
         rospy.Subscriber("raw_image", Image, self.read_data)
         self.run()
@@ -70,7 +69,7 @@ class YOLOv5:
             hide_conf=False
             ):
 
-        while self.img == None: pass
+        while type(self.img) == bool: pass
 
         device = select_device(device)
         model = DetectMultiBackend(weights, device=device, dnn=False)
