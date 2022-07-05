@@ -1,18 +1,14 @@
 #!/home/autonav-linux/catkin_ws/src/yolov5_ROS/scripts/yolov5/bin/python3
 
-from std_msgs.msg import String
-from sensor_msgs.msg import Image
+from E2E_Camera.msg import N_image
 import rospy
 import numpy as np
 import cv2
 import time
 
-n_channels = 3
-dtype = np.uint8
-
 def imgmsg_to_cv2(img_msg):
-    im = np.ndarray(shape=(img_msg.height, img_msg.width, n_channels),
-                    dtype=dtype, buffer=img_msg.data)
+    im = np.ndarray(shape=(img_msg.height, img_msg.width, img_msg.n_channels),
+                    dtype=eval(img_msg.dtype), buffer=img_msg.data)
     return im
 
 def main(data):
@@ -23,6 +19,7 @@ def main(data):
 
     print(time.time() - s_time)
 
+
 rospy.init_node("listener", anonymous=True)
-rospy.Subscriber("raw_image", Image, main)
+rospy.Subscriber("raw_image", N_image, main)
 rospy.spin()

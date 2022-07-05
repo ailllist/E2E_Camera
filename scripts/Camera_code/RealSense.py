@@ -1,26 +1,32 @@
 #!/home/autonav-linux/catkin_ws/src/yolov5_ROS/scripts/yolov5/bin/python3
 
-from sensor_msgs.msg import Image
+from E2E_Camera.msg import N_image
 import pyrealsense2 as rs
 import numpy as np
 import rospy
 import cv2
 
-FPS = 30
-Width = 1280
-Height = 720
+param_list = list(rospy.get_param_names())
+for i in param_list:
+    tmp_list = i.split("/")
+    for j in tmp_list:
+        if j == "FPS":
+            FPS = rospy.get_param(i)
+        elif j == "Height":
+            Height = rospy.get_param(i)
+        elif j == "Width":
+            Width = rospy.get_param(i)
+
 Numpy_type_to_cvtype = {'uint8': '8U', 'int8': '8S', 'uint16': '16U',
                              'int16': '16S', 'int32': '32S', 'float32': '32F',
                              'float64': '64F'}
 
-def cv2_to_imgmsg(img): # only activate at 3 channels camera
-    img_msg = Image()
+def cv2_to_n_img(img):
+    img_msg = N_image()
     img_msg.height = Height
     img_msg.width = Width
-    cv_type = "%sC%d" % (Numpy_type_to_cvtype[str(img.dtype)], img.shape[2])
-    img_msg.encoding = cv_type
-    if img.dtype.byteorder == '>':
-        img_msg.is_bigendian = True
+    img_msg.n_channels = 3
+    img_msg.dtype = "np.uint8"
     img_msg.data = img.tostring()
     img_msg.step = len(img_msg.data) // img_msg.height
     return img_msg
@@ -47,9 +53,12 @@ config.enable_stream(rs.stream.color, Width, Height, rs.format.bgr8, FPS)
 
 # Start streaming
 pipeline.start(config)
-pub = rospy.Publisher("raw_image", Image, queue_size=10)
+pub = rospy.Publisher("raw_image", N_image, queue_size=10)
 rospy.init_node("RealSense", anonymous=True)
-rate = rospy.Rate(FPS)
+if FPS == 0:
+    rate = rospy.Rate(60)
+else:
+    rate = rospy.Rate(FPS)
 
 while True:
     if rospy.is_shutdown():
@@ -64,5 +73,6 @@ while True:
     color_image = np.asanyarray(color_frame.get_data())
 
     color_image = color_image.astype(np.uint8)
-    pub.publish(cv2_to_imgmsg(color_image))
+    # pub.publish(cv2_to_imgmsg(color_image))
+    pub.publish(cv2_to_n_img(color_image))
     rate.sleep()

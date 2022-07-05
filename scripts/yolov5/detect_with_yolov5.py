@@ -9,10 +9,11 @@ import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
 import copy
+import time
 
 import rospy
 from std_msgs.msg import String
-from sensor_msgs.msg import Image
+from E2E_Camera.msg import N_image
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
@@ -27,30 +28,26 @@ from utils.plots import Annotator, colors
 from utils.torch_utils import select_device, time_sync
 from utils.augmentations import letterbox
 
-IMGSZ = (1920, 1080)
-FPS = 13
-
-n_channels = 3
-dtype = np.uint8
-
 class YOLOv5:
 
 
     def __init__(self):
         self.img = False
+        self.IMGSZ = [0, 0]
         rospy.init_node("yolov5-main", anonymous=True)
-        rospy.Subscriber("raw_image", Image, self.read_data)
+        rospy.Subscriber("raw_image", N_image, self.read_data)
         self.run()
         rospy.spin()
 
     def read_data(self, img_msg):
-        self.img = np.ndarray(shape=(img_msg.height, img_msg.width, n_channels),
-                              dtype=dtype, buffer=img_msg.data)
+        self.img = np.ndarray(shape=(img_msg.height, img_msg.width, img_msg.n_channels),
+                              dtype=eval(img_msg.dtype), buffer=img_msg.data)
+        self.IMGSZ = [img_msg.width, img_msg.height]
 
     def make_im0(self, img, stride=32):
 
         img0 = copy.deepcopy(img)
-        img_size = IMGSZ[0]
+        img_size = self.IMGSZ[0]
         img = letterbox(img0, img_size, stride=stride, auto=True)[0]
 
         img = img.transpose((2, 0, 1))[::-1]
@@ -74,7 +71,7 @@ class YOLOv5:
         device = select_device(device)
         model = DetectMultiBackend(weights, device=device, dnn=False)
         stride, names, pt, jit, onnx, engine = model.stride, model.names, model.pt, model.jit, model.onnx, model.engine
-        imgsz = check_img_size(IMGSZ, s=stride)
+        imgsz = check_img_size(tuple(self.IMGSZ), s=stride)
 
         half = False
         half &= (pt or jit or onnx or engine) and device != "cpu"
@@ -92,6 +89,7 @@ class YOLOv5:
 
         while True:
 
+            s_time = time.time()
             if rospy.is_shutdown():
                 cv2.destroyAllWindows()
                 break
@@ -111,7 +109,7 @@ class YOLOv5:
             dt[1] += t3 - t2
 
             pred = non_max_suppression(pred, conf_thres, iou_thres, None, None, max_det=max_det)
-            dt[3] += time_sync() - t3
+            dt[2] += time_sync() - t3
 
             save_txt = ""
             for i, det in enumerate(pred):
@@ -142,6 +140,7 @@ class YOLOv5:
 
                 pub.publish(save_txt)
                 rate.sleep()
+            print("time : ", time.time()-s_time)
 
 if __name__ == "__main__":
     YOLOv5()
