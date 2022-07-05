@@ -11,7 +11,6 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   sensor_msgs
-  cv_bridge
 )
 
 ## System dependencies are found with CMake's conventions
@@ -162,7 +161,9 @@ include_directories(
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
   scripts/Camera_code/RealSense.py
+  scripts/yolov5/detect_with_yolov5.py
   scripts/receiver.py
+
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
