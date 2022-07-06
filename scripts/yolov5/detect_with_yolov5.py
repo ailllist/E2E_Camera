@@ -13,7 +13,7 @@ import time
 
 import rospy
 from std_msgs.msg import String
-from E2E_Camera.msg import N_image
+from E2E_Camera.msg import N_image, camera_data
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
@@ -84,7 +84,7 @@ class YOLOv5:
         model.warmup(imgsz=(1 if pt else bs, 3, *imgsz), half=half)
         dt, seen = [0.0, 0.0, 0.0], 0
 
-        pub = rospy.Publisher("classes", String, queue_size=10)
+        pub = rospy.Publisher("yolov5_classes", camera_data, queue_size=10)
         rate = rospy.Rate(50)
 
         while True:

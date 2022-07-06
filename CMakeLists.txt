@@ -56,6 +56,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   N_image.msg
+  camera_data.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -166,6 +167,7 @@ include_directories(
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
   scripts/Camera_code/RealSense.py
+  scripts/Camera_code/FLIR_Camera.py
   scripts/yolov5/detect_with_yolov5.py
   scripts/receiver.py
 

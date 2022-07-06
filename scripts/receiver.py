@@ -7,6 +7,7 @@ import cv2
 import time
 
 def imgmsg_to_cv2(img_msg):
+    print(img_msg.__dir__())
     im = np.ndarray(shape=(img_msg.height, img_msg.width, img_msg.n_channels),
                     dtype=eval(img_msg.dtype), buffer=img_msg.data)
     return im
