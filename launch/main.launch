@@ -8,9 +8,10 @@
 	    <param name="PT" value="yolov5s.pt" />
         </node>
 
-        <node pkg="E2E_Camera" type="detect_with_yolov5.py" name="yolov5_1">
+        <node pkg="E2E_Camera" type="detect_with_yolov5.py" name="yolov5_1" output="screen">
 	    <param name="PT" value="yolov5s.pt" />
         </node>
+
     </group>
 
     <group ns="data_sender">

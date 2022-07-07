@@ -149,7 +149,7 @@ class YOLOv5:
                 self.pub.publish(camera_msg)
                 self.rate.sleep()
 
-            # print("time : ", time.time()-s_time)
+            print("time : ", time.time()-s_time)
         rospy.spin()
 if __name__ == "__main__":
     YOLOv5()
