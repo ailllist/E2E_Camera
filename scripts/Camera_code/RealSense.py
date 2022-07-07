@@ -17,6 +17,8 @@ for i in param_list:
         elif j == "Width":
             Width = rospy.get_param(i)
 
+print(FPS, Height, Width)
+
 Numpy_type_to_cvtype = {'uint8': '8U', 'int8': '8S', 'uint16': '16U',
                              'int16': '16S', 'int32': '32S', 'float32': '32F',
                              'float64': '64F'}

@@ -1,0 +1,20 @@
+<launch>
+    <group ns="yolov5">
+        <node pkg="E2E_Camera" type="RealSense.py" name="RealSense">
+            <rosparam file="$(find E2E_Camera)/scripts/Camera_code/RealSense.yaml" command="load" />
+        </node>
+
+        <node pkg="E2E_Camera" type="detect_with_yolov5.py" name="yolov5">
+	    <param name="PT" value="yolov5s.pt" />
+        </node>
+
+        <node pkg="E2E_Camera" type="detect_with_yolov5.py" name="yolov5_1">
+	    <param name="PT" value="yolov5s.pt" />
+        </node>
+    </group>
+
+    <group ns="data_sender">
+        <node pkg="E2E_Camera" type="data_sender.py" name="data_sender" output="screen">
+        </node>
+    </group>
+</launch>

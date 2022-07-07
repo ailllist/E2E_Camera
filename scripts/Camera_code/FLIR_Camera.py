@@ -1,3 +1,5 @@
+#!/home/autonav-linux/catkin_ws/src/yolov5_ROS/scripts/yolov5/bin/python3
+
 from E2E_Camera.msg import N_image
 import os
 import time

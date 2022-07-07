@@ -28,6 +28,15 @@ from utils.plots import Annotator, colors
 from utils.torch_utils import select_device, time_sync
 from utils.augmentations import letterbox
 
+
+param_list = list(rospy.get_param_names())
+for i in param_list:
+    tmp_list = i.split("/")
+    for j in tmp_list:
+        if j == "PT":
+            PT_FILE = rospy.get_param(i)
+
+
 class YOLOv5:
 
 
@@ -36,8 +45,9 @@ class YOLOv5:
         self.IMGSZ = [0, 0]
         rospy.init_node("yolov5-main", anonymous=True)
         rospy.Subscriber("raw_image", N_image, self.read_data)
+        self.pub = rospy.Publisher("yolov5_classes", camera_data, queue_size=10)
+        self.rate = rospy.Rate(50)
         self.run()
-        rospy.spin()
 
     def read_data(self, img_msg):
         self.img = np.ndarray(shape=(img_msg.height, img_msg.width, img_msg.n_channels),
@@ -56,7 +66,7 @@ class YOLOv5:
         return img, img0
 
     @torch.no_grad()
-    def run(self, weights=ROOT / 'yolov5s.pt',
+    def run(self, weights=ROOT / f'{PT_FILE}',
             conf_thres=0.6,
             iou_thres=0.45,
             max_det=1000,
@@ -83,9 +93,6 @@ class YOLOv5:
 
         model.warmup(imgsz=(1 if pt else bs, 3, *imgsz), half=half)
         dt, seen = [0.0, 0.0, 0.0], 0
-
-        pub = rospy.Publisher("yolov5_classes", camera_data, queue_size=10)
-        rate = rospy.Rate(50)
 
         while True:
 
@@ -137,10 +144,12 @@ class YOLOv5:
                     im0 = annotator.result()
                 cv2.imshow("res", im0)
                 cv2.waitKey(1)
+                camera_msg = camera_data()
+                camera_msg.yolov5 = save_txt
+                self.pub.publish(camera_msg)
+                self.rate.sleep()
 
-                pub.publish(save_txt)
-                rate.sleep()
-            print("time : ", time.time()-s_time)
-
+            # print("time : ", time.time()-s_time)
+        rospy.spin()
 if __name__ == "__main__":
     YOLOv5()
