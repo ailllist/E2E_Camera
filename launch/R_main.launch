@@ -11,6 +11,7 @@
         <node pkg="E2E_Camera" type="detect_with_yolov5.py" name="yolov5_1">
 	    <param name="PT" value="yolov5s.pt" />
         </node>
+
     </group>
 
     <group ns="data_sender">

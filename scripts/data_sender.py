@@ -20,7 +20,7 @@ class Data_sender:
 
     def send_data(self):
         pub = rospy.Publisher("classes", String, queue_size=10)
-        rate = rospy.Rate(50)
+        rate = rospy.Rate(10)
         while True:
             pub.publish(self.send_txt)
             self.send_txt = ""

@@ -90,7 +90,6 @@ def configure_custom_image_settings(nodemap):
             print('Height set to %i...' % node_height.GetValue())
         else:
             print('Height not available...')
-
         if not bool(SET_FPS):
             node_FPSAuto = PySpin.CEnumerationPtr(nodemap.GetNode("AcquisitionFrameRateAuto"))
             node_FPSAutoOff = PySpin.CEnumEntryPtr(node_FPSAuto.GetEntryByName("Off"))
