@@ -140,7 +140,7 @@ def acquire_images(cam, nodemap, nodemap_tldevice):
         acquisition_mode_continuous = node_acquisition_mode_continuous.GetValue()
         node_acquisition_mode.SetIntValue(acquisition_mode_continuous)
         cam.BeginAcquisition()
-        pub = rospy.Publisher("raw_image", N_image, queue_size=10)
+        pub = rospy.Publisher("raw_image", N_image, queue_size=1)
         rospy.init_node("RealSense", anonymous=True)
         if SET_FPS == 0:
             rate = rospy.Rate(60)
