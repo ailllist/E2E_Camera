@@ -13,4 +13,9 @@
         <node pkg="E2E_Camera" type="data_sender.py" name="data_sender">
         </node>
     </group>
+
+    <group ns="main">
+        <node pkg="E2E_Camera" type="signal_recv.py" name="signal_reciver">
+        </node>
+    </group>
 </launch>
