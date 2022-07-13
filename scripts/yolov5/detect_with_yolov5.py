@@ -1,19 +1,20 @@
 #!/home/autonav-linux/catkin_ws/src/yolov5_ROS/scripts/yolov5/bin/python3
 
-import os
-import sys
-from pathlib import Path
-
-import cv2
 import numpy as np
-import torch
-import torch.backends.cudnn as cudnn
 import copy
 import time
 
 import rospy
 from std_msgs.msg import String
 from E2E_Camera.msg import N_image, camera_data
+
+import argparse
+import os
+import sys
+from pathlib import Path
+
+import torch
+import torch.backends.cudnn as cudnn
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
@@ -23,11 +24,11 @@ ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
 from models.common import DetectMultiBackend
 from utils.dataloaders import IMG_FORMATS, VID_FORMATS, LoadImages, LoadStreams
+from utils.augmentations import letterbox
 from utils.general import (LOGGER, check_file, check_img_size, check_imshow, check_requirements, colorstr, cv2,
                            increment_path, non_max_suppression, print_args, scale_coords, strip_optimizer, xyxy2xywh)
 from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import select_device, time_sync
-from utils.augmentations import letterbox
 
 try:
     param_list = list(rospy.get_param_names())
@@ -84,7 +85,7 @@ class YOLOv5:
         while type(self.img) == bool: pass
 
         device = select_device(device)
-        model = DetectMultiBackend(weights, device=device)
+        model = DetectMultiBackend(weights, device=device, dnn=False, fp16=False)
         stride, names, pt = model.stride, model.names, model.pt
         imgsz = check_img_size(tuple(self.IMGSZ), s=stride)
 
@@ -120,7 +121,7 @@ class YOLOv5:
             t3 = time_sync()
             dt[1] += t3 - t2
 
-            pred = non_max_suppression(pred, conf_thres, iou_thres, False, False, max_det=max_det)
+            pred = non_max_suppression(pred, conf_thres, iou_thres, None, False, max_det=max_det)
             dt[2] += time_sync() - t3
 
             save_txt = ""

@@ -37,11 +37,13 @@ def cv2_to_n_img(img):
 
 pub = rospy.Publisher("raw_image", N_image, queue_size=10)
 rospy.init_node("Using_Flie", anonymous=True)
-rate = rospy.Rate()
+rate = rospy.Rate(FPS)
 
 if Type == "video":
     vid = cv2.VideoCapture(Path)
     while True:
+        if rospy.is_shutdown():
+            break
         _, img = vid.read()
         pub.publish(cv2_to_n_img(img))
         rate.sleep()
@@ -50,6 +52,8 @@ elif Type == "folder":
     img_list = os.listdir(Path)
 
     while True:
+        if rospy.is_shutdown():
+            break
         img = cv2.imread(fr"{Path}/{img_list[0]}")
         del img_list[0]
         pub.publish(cv2_to_n_img(img))

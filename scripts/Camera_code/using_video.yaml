@@ -1,5 +1,5 @@
 Width: 1920
 Height: 1080
 Type: "video" # video or folder
-Path: "" # target path imgs : image folder path / video : video's path
-FPS: 10
+Path: "/home/autonav-linux/catkin_ws/src/yolov5_ROS/scripts/traffic_light_test.mp4" # target path imgs : image folder path / video : video's path
+FPS: 30
