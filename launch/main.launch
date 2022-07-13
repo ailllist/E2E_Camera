@@ -4,8 +4,8 @@
             <rosparam file="$(find E2E_Camera)/scripts/Camera_code/FLIR_Camera.yaml" command="load" />
         </node>
 
-        <node pkg="E2E_Camera" type="detect_with_yolov5.py" name="yolov5_1" output="screen">
-	        <param name="PT" value="traffic_light.pt" />
+        <node pkg="E2E_Camera" type="detect_with_yolov5.py" name="yolov5" output="screen">
+	        <param name="PT" value="0713_intg.pt" />
         </node>
 
     </group>

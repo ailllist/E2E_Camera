@@ -47,7 +47,7 @@ class YOLOv5:
         rospy.init_node("yolov5-main", anonymous=True)
         rospy.Subscriber("raw_image", N_image, self.read_data)
         self.pub = rospy.Publisher("yolov5_classes", camera_data, queue_size=10)
-        self.rate = rospy.Rate(50)
+        self.rate = rospy.Rate(20)
         self.run()
 
     def read_data(self, img_msg):

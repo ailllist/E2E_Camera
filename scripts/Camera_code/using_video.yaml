@@ -1,0 +1,5 @@
+Width: 1920
+Height: 1080
+Type: "video" # video or folder
+Path: "" # target path imgs : image folder path / video : video's path
+FPS: 10
