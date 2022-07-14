@@ -151,7 +151,6 @@ def acquire_images(cam, nodemap, nodemap_tldevice):
         while True:
 
             if rospy.is_shutdown():
-                cv2.destroyWindow()
                 break
 
             try:

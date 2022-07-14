@@ -22,6 +22,8 @@ class Data_sender:
         pub = rospy.Publisher("classes", String, queue_size=10)
         rate = rospy.Rate(10)
         while True:
+            if rospy.is_shutdown():
+                break
             pub.publish(self.send_txt)
             self.send_txt = ""
             rate.sleep()

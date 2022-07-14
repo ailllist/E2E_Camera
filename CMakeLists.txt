@@ -166,9 +166,12 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
+  scripts/Camera_code/using_video.py
   scripts/Camera_code/RealSense.py
   scripts/Camera_code/FLIR_Camera.py
   scripts/yolov5/detect_with_yolov5.py
+  scripts/data_sender.py
+  scripts/Advenced_Camera.py
   scripts/receiver.py
 
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
