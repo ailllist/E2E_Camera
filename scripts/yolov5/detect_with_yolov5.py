@@ -6,12 +6,14 @@ import time
 
 import rospy
 from std_msgs.msg import String
+from sensor_msgs.msg import Image
 from E2E_Camera.msg import N_image, camera_data
 
 import argparse
 import os
 import sys
 from pathlib import Path
+from cv_bridge import CvBridge
 
 import torch
 import torch.backends.cudnn as cudnn
@@ -52,6 +54,7 @@ class YOLOv5:
         rospy.init_node("yolov5-main", anonymous=True)
         rospy.Subscriber("raw_image", N_image, self.read_data)
         self.pub = rospy.Publisher("yolov5_classes", camera_data, queue_size=10)
+        self.pub1 = rospy.Publisher("cam_Images", Image, queue_size=10)
         self.rate = rospy.Rate(50)
         self.run(weights=PT_FILE)
 
@@ -108,6 +111,8 @@ class YOLOv5:
                 break
 
             im, im0 = self.make_im0(self.img, stride)
+            bridge = CvBridge()
+            self.pub1.publish(bridge.cv2_to_imgmsg(im0, encoding="passthrough"))
             t1 = time_sync()
             im = torch.from_numpy(im).to(device)
             im = im.half() if model.fp16 else im.float()
@@ -155,6 +160,7 @@ class YOLOv5:
                 cv2.waitKey(1)
                 camera_msg = camera_data()
                 camera_msg.yolov5 = save_txt
+
                 self.pub.publish(camera_msg)
                 self.rate.sleep()
 

@@ -10,6 +10,7 @@ project(E2E_Camera)
 find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
+  cv_bridge
   sensor_msgs
   message_generation
 )
