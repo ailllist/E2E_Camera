@@ -11,9 +11,15 @@
 
     <group ns="data_sender">
         <node pkg="E2E_Camera" type="Advenced_Camera.py" name="AdvCam" output="screen">
+            <param name="class_cnt" value="15" />
+            <!-- value/10 == sec -->
         </node>
         <node pkg="E2E_Camera" type="data_sender.py" name="data_sender">
         </node>
     </group>
 
+    <group ns="main">
+        <node pkg="E2E_Camera" type="signal_recv.py" name="recv">
+        </node>
+    </group>
 </launch>
