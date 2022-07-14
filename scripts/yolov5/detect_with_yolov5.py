@@ -145,7 +145,10 @@ class YOLOv5:
                         annotator.box_label(xyxy, label, color=colors(c, True))
                         save_list = [str(i.tolist()) for i in xyxy]
                         pre_txt = ", ".join(save_list)
-                        save_txt += f"{names[c]}-{pre_txt}-{conf:.2f}/"
+                        if str(names[c]) in ["SUV", "SD"]:
+                            save_txt += f"CAR-{pre_txt}-{conf:.2f}/"
+                        else:
+                            save_txt += f"{names[c]}-{pre_txt}-{conf:.2f}/"
 
                     im0 = annotator.result()
                 cv2.imshow("res", im0)
