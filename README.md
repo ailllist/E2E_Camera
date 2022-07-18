@@ -99,7 +99,7 @@
 >>```
 >> 와 같은 방식으로 launch 파일을 구성하자
 > 
-> ###3. How to launch
+> ### 3. How to launch
 >> (catkin_make 가 끝난 이후로 가정)
 >> ```bash
 >> $ roslaunch E2E_camera [launch_file_name].launch
