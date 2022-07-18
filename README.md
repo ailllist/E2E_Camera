@@ -57,6 +57,7 @@
 > 상황에 맞게 새로운 message를 생성하면 된다.
 >>    
 >> 해당 노드의 경우 본인이 사용하는 여러가지 detector를 보조해주는 filter로서 기능하게끔 코딩해주면 된다.
+>    
 > ### 2. roslaunch
 >> 기본적으로 본 패키지에는 FLIR 카메라, RealSense, video와 폴더 내 이미지를 input이미지로서 실행 가능하게끔 하는 launch파일이
 > 포함되어있다.
@@ -96,7 +97,7 @@
 >> </launch>
 >>```
 >> 와 같은 방식으로 launch 파일을 구성하자
-> 
+>     
 > ### 3. How to launch
 >> (catkin_make 가 끝난 이후로 가정)
 >> ```bash
