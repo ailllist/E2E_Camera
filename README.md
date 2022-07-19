@@ -19,7 +19,7 @@
 >> *(cv_bridge를 사용할 수 없는 경우)* cv_bridge를 이용해 python에서 Image를 publish하는 부분은 가능하지만, 필자가 사용한 환경 내에서는 해당 data를 Subscribe하여 cv2.imshow가 불가능 했다.
 >> 따라서 이 경우는 E2E_Camera의 N_image msg를 활용하여 image publish&subscribe에 필요한 data를 채워넣는 방식으로 message를 발행하면 된다.
 >> ``` python
->> def cv2_to_n_img(img): -> E2E_Camera.msg.N_image
+>> def cv2_to_n_img(img) -> E2E_Camera.msg.N_image:
 >>     img_msg = N_image()
 >>     img_msg.height = IMG_HEIGHT
 >>     img_msg.width = IMG_WIDTH
