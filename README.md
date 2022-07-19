@@ -9,7 +9,7 @@
 > 예시에서는 영상을 input으로 지정하는 filelaunch가 사용되었으며 FILE, yolov5라는 Node가 생성되었음을 확인할 수 있다.     
 >     
 > 다음으로는 detector의 결과를 취합해 외부 모듈로 전송하는 data_sender node와 AdvCam node가 하나의 그룹 data_sender를 이룬다.
-> data_sender는 단순히 데이터를 취합해 외부 모듈로 전송하는 역할만을 수행하고, AdvCam은 해당 데이터를 후철해주는 node이다.
+> data_sender는 단순히 데이터를 취합해 외부 모듈로 전송하는 역할만을 수행하고, AdvCam은 해당 데이터를 후처리해주는 node이다.
 > #### 1.1 카메라 입력
 >> scripts/Camera_code에 해당하는 부분이다. 자신이 사용하고자 하는 카메라에 대응되는 코드를 찾거나, 직접 작성하여 Camera_code폴더 내에
 >> 위치시킨다.
