@@ -116,7 +116,7 @@ def l_holder(classes):
 
 
 def seperator(classes_str: str) -> list:
-    classes_str = l_holder(classes_str)
+    # classes_str = l_holder(classes_str)
     tmp_list = [i.split("-") for i in classes_str.split("/")]
     del tmp_list[len(tmp_list)-1]
     return tmp_list
